@@ -2,10 +2,8 @@ package telegram.bot.services.impl;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -20,10 +18,9 @@ import java.net.URL;
 
 @Getter
 @Setter
+@Slf4j
 @Component
 public class FunnyStoryImpl implements MessageSender {
-
-    private static final Logger logger = LoggerFactory.getLogger(FunnyStoryImpl.class);
 
     @Override
     public SendMessage answerForUser(Update update) {
@@ -39,7 +36,7 @@ public class FunnyStoryImpl implements MessageSender {
             con.setRequestMethod("GET");
 
             BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream(),"windows-1251"));
+                    new InputStreamReader(con.getInputStream(), "windows-1251"));
             String inputLine;
 
             while ((inputLine = in.readLine()) != null) {
@@ -47,7 +44,7 @@ public class FunnyStoryImpl implements MessageSender {
             }
             in.close();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
         return new JSONObject(response.toString()).getString("content");
     }
